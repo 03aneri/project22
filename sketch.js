@@ -2,58 +2,45 @@ const Engine = Matter.Engine;
 const World = Matter.World;
 const Bodies = Matter.Bodies;
 const Constraint = Matter.Constraint;
+var engine, world,ground;
 
-var engine, world;
-var canvas;
-var palyer, playerBase, playerArcher;
-var baseimage;
 
-function preload() {
-  backgroundImg = loadImage("./assets/background.png");
-  baseimage = loadImage("./assets/base.png");
-  playerimage = loadImage("./assets/player.png");
+
+function preload(){
+ bgIMG = loadImage("assets/background.gif")
+tower1 = loadImage("assets/tower.png")
+
 }
-
 function setup() {
-  canvas = createCanvas(windowWidth, windowHeight);
 
+  canvas = createCanvas(1200, 600);
   engine = Engine.create();
   world = engine.world;
-  angleMode(DEGREES);
+  
+  var option = {
+    isStatic:true
+  }
+ ground = Bodies.rectangle(0,590,width,12,option)
+World.add (world,ground)
 
-  var options = {
-    isStatic: true
-  };
+tower = Bodies.rectangle(160,350,160,310,option)
+World.add(world,tower)
 
-  playerBase = Bodies.rectangle(200, 350, 180, 150, options);
-  World.add(world, playerBase);
-
-  player = Bodies.rectangle(250, playerBase.position.y - 160, 50, 180, options);
-  World.add(world,player)
-
- // playerArcher = new ( 340, playerBase.position.y - 112, 120, 120);
-  playerArcher = new PlayerArcher( 340, playerBase.position.y - 112, 120, 120);
- // playerArcher =  PlayerArcher( 340, playerBase.position.y - 112, 120, 120);
- // playerArcher = new PlayerArcher( );
-
+angle = 20
+cannon1 = new cannon(180,110,130,100,angle)
 }
 
 function draw() {
-  background(backgroundImg);
-  image(baseimage,playerBase.position.x,playerBase.position.y,180,150)
-  image(playerimage,player.position.x,player.position.y,50,180)
-
+ // background(189);
+ image(bgIMG,0,0,width,height)
   Engine.update(engine);
+  
+ rect(ground.position.x,ground.position.y,width,12)
+ 
+ push();
+ imageMode(CENTER)
+ image(tower1,tower.position.x,tower.position.y,160,310)
+ pop()
 
-
-  // playerArcher.display;
-  // playerArcherdisplay();
-  playerArcher.display();
-  // display();
-
-  // Title
-  fill("#FFFF");
-  textAlign("center");
-  textSize(40);
-  text("EPIC ARCHERY", width / 2, 100);
+cannon1.show()
 }
